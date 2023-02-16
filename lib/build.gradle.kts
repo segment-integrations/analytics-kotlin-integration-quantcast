@@ -52,7 +52,7 @@ dependencies {
 
 // Partner Dependencies
 dependencies {
-    // TODO add your partner deps here
+    implementation("com.quantcast.android.measurement:QuantcastAndroidSdk:1.5.1")
 }
 
 // Test Dependencies
