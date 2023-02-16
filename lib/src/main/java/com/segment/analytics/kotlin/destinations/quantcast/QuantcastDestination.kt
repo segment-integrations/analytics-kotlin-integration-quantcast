@@ -68,8 +68,7 @@ class QuantcastDestination : DestinationPlugin(), AndroidLifecycle {
 
     private fun quantcastLogEvent(event: String) {
         analytics.log("QuantcastClient.logEvent($event)")
-        QuantcastClient.logEvent("Viewed $event Screen")
-
+        QuantcastClient.logEvent(event)
     }
 }
 
