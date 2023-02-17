@@ -1,6 +1,8 @@
 package com.segment.analytics.kotlin.destinations.quantcast
 
 import android.app.Activity
+import android.app.Application
+import android.util.Log
 import com.quantcast.measurement.service.QuantcastClient
 import com.segment.analytics.kotlin.android.plugins.AndroidLifecycle
 import com.segment.analytics.kotlin.core.*
@@ -55,6 +57,8 @@ class QuantcastDestination : DestinationPlugin(), AndroidLifecycle {
 
     override fun onActivityStarted(activity: Activity?) {
         super.onActivityStarted(activity)
+        this.quantcastSettings =
+            analytics.settings()?.destinationSettings(key, QuantcastSettings.serializer())
         analytics.log(
             "QuantcastClient.activityStart(activity, ${quantcastSettings?.apiKey}, null, null)")
         QuantcastClient.activityStart(activity, quantcastSettings?.apiKey, null, null)
