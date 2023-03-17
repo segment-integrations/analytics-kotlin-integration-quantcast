@@ -81,31 +81,6 @@ class QuantcastDestinationTests {
     }
 
     @Test
-    fun `activity started handled correctly`() {
-        val quantcastSettings: Settings = sampleQuantcastSettings
-        mockedQuantcastDestination.update(quantcastSettings, Plugin.UpdateType.Initial)
-        val activity: Activity = mockkClass(Activity::class)
-        val intent: Intent = mockkClass(Intent::class)
-        every { activity.intent } returns intent
-        every { activity.applicationContext } returns mockedContext
-        every { mockedContext.checkCallingOrSelfPermission("android.permission.WAKE_LOCK") } returns -1
-
-        mockedQuantcastDestination.onActivityStarted(activity)
-        verify {
-            QuantcastClient.activityStart(activity, "APIKEY1234567890", null, null)
-        }
-    }
-
-    @Test
-    fun `activity stopped handled correctly`() {
-        val activity: Activity = mockkClass(Activity::class)
-        val intent: Intent = mockkClass(Intent::class)
-        every { activity.intent } returns intent
-        mockedQuantcastDestination.onActivityStopped(activity)
-        verify { QuantcastClient.activityStop() }
-    }
-
-    @Test
     fun `identify handled correctly`() {
         val sampleEvent = IdentifyEvent(
             userId = "User-Id-123",
