@@ -65,6 +65,8 @@ class QuantcastDestinationTests {
 
     @Test
     fun `settings are updated correctly`() {
+        every { QuantcastClient.startQuantcast(mockApplication, "APIKEY1234567890", null, null) } answers { }
+
         // An Quantcast example settings
         val quantcastSettings: Settings = sampleQuantcastSettings
         mockedQuantcastDestination.update(quantcastSettings, Plugin.UpdateType.Initial)
@@ -82,17 +84,16 @@ class QuantcastDestinationTests {
 
     @Test
     fun `activity started handled correctly`() {
-        val quantcastSettings: Settings = sampleQuantcastSettings
-        mockedQuantcastDestination.update(quantcastSettings, Plugin.UpdateType.Initial)
+        val settings = mockkClass(QuantcastSettings::class)
+        mockedQuantcastDestination.quantcastSettings = settings
         val activity: Activity = mockkClass(Activity::class)
         val intent: Intent = mockkClass(Intent::class)
         every { activity.intent } returns intent
         every { activity.applicationContext } returns mockedContext
         every { mockedContext.checkCallingOrSelfPermission("android.permission.WAKE_LOCK") } returns -1
-
         mockedQuantcastDestination.onActivityStarted(activity)
         verify {
-            QuantcastClient.activityStart(activity, "APIKEY1234567890", null, null)
+            QuantcastClient.activityStart(activity)
         }
     }
 

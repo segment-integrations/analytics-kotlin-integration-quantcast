@@ -1,6 +1,9 @@
 package com.segment.analytics.kotlin.destinations.quantcast
 
 import android.app.Activity
+import android.app.Application
+import android.os.Bundle
+import android.util.Log
 import com.quantcast.measurement.service.QuantcastClient
 import com.segment.analytics.kotlin.android.plugins.AndroidLifecycle
 import com.segment.analytics.kotlin.core.*
@@ -32,6 +35,11 @@ class QuantcastDestination : DestinationPlugin(), AndroidLifecycle {
         this.quantcastSettings =
             settings.destinationSettings(key, QuantcastSettings.serializer())
         if (type == Plugin.UpdateType.Initial) {
+            QuantcastClient.startQuantcast(
+                analytics.configuration.application as Application?,
+                quantcastSettings?.apiKey,
+                null,
+                null)
             analytics.log("QuantcastClient.enableLogging(true)")
             QuantcastClient.enableLogging(true)
         }
@@ -55,15 +63,22 @@ class QuantcastDestination : DestinationPlugin(), AndroidLifecycle {
 
     override fun onActivityStarted(activity: Activity?) {
         super.onActivityStarted(activity)
-        analytics.log(
-            "QuantcastClient.activityStart(activity, ${quantcastSettings?.apiKey}, null, null)")
-        QuantcastClient.activityStart(activity, quantcastSettings?.apiKey, null, null)
+        if(quantcastSettings != null) {
+            QuantcastClient.activityStart(activity)
+            analytics.log(
+                "QuantcastClient.activityStart(activity)"
+            )
+        }
     }
 
     override fun onActivityStopped(activity: Activity?) {
         super.onActivityStopped(activity)
         analytics.log("QuantcastClient.activityStop()")
         QuantcastClient.activityStop()
+    }
+
+    override fun onActivityCreated(activity: Activity?, savedInstanceState: Bundle?) {
+        super.onActivityCreated(activity, savedInstanceState)
     }
 
     private fun quantcastLogEvent(event: String) {
