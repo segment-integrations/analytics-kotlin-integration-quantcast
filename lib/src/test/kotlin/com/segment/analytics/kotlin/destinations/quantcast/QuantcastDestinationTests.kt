@@ -1,9 +1,7 @@
 package com.segment.analytics.kotlin.destinations.quantcast
 
-import android.app.Activity
 import android.app.Application
 import android.content.Context
-import android.content.Intent
 import com.quantcast.measurement.service.QuantcastClient
 import com.segment.analytics.kotlin.core.*
 import com.segment.analytics.kotlin.core.platform.Plugin
@@ -80,30 +78,6 @@ class QuantcastDestinationTests {
             assertEquals(pCode, "")
         }
         verify { QuantcastClient.enableLogging(true) }
-    }
-
-    @Test
-    fun `activity started handled correctly`() {
-        val settings = mockkClass(QuantcastSettings::class)
-        mockedQuantcastDestination.quantcastSettings = settings
-        val activity: Activity = mockkClass(Activity::class)
-        val intent: Intent = mockkClass(Intent::class)
-        every { activity.intent } returns intent
-        every { activity.applicationContext } returns mockedContext
-        every { mockedContext.checkCallingOrSelfPermission("android.permission.WAKE_LOCK") } returns -1
-        mockedQuantcastDestination.onActivityStarted(activity)
-        verify {
-            QuantcastClient.activityStart(activity)
-        }
-    }
-
-    @Test
-    fun `activity stopped handled correctly`() {
-        val activity: Activity = mockkClass(Activity::class)
-        val intent: Intent = mockkClass(Intent::class)
-        every { activity.intent } returns intent
-        mockedQuantcastDestination.onActivityStopped(activity)
-        verify { QuantcastClient.activityStop() }
     }
 
     @Test

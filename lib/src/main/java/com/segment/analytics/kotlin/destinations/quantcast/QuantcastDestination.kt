@@ -61,22 +61,6 @@ class QuantcastDestination : DestinationPlugin(), AndroidLifecycle {
         return payload
     }
 
-    override fun onActivityStarted(activity: Activity?) {
-        super.onActivityStarted(activity)
-        if(quantcastSettings != null) {
-            QuantcastClient.activityStart(activity)
-            analytics.log(
-                "QuantcastClient.activityStart(activity)"
-            )
-        }
-    }
-
-    override fun onActivityStopped(activity: Activity?) {
-        super.onActivityStopped(activity)
-        analytics.log("QuantcastClient.activityStop()")
-        QuantcastClient.activityStop()
-    }
-
     override fun onActivityCreated(activity: Activity?, savedInstanceState: Bundle?) {
         super.onActivityCreated(activity, savedInstanceState)
     }
