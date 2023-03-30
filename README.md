@@ -23,6 +23,13 @@ Open the file where you setup and configure the Analytics-Kotlin library. Add th
 import com.segment.analytics.kotlin.destinations.quantcast.QuantcastDestination
 ```
 
+In order to satisfy the Quantcast library dependency, you may have to add the following to the repositories setup in your project's gradle files:
+```
+ repositories {
+        gradlePluginPortal()
+    }
+```
+
 Just under your Analytics-Kotlin library setup, call `analytics.add(plugin = ...)` to add an instance of the plugin to the Analytics timeline.
 
 ```
