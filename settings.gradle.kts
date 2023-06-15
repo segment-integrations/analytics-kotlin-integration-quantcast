@@ -1,4 +1,4 @@
-rootProject.name = "analytics-kotlin-integration-quantcast"
+rootProject.name = "analytics-kotlin-quantcast"
 include(":lib")
 includeBuild("publishing-plugins")
 include(":testapp")
